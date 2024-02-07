@@ -1,14 +1,19 @@
+require('dotenv').config();
+const { Pool } = require('pg');
+
 const pool = new Pool({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'finonex',
-  password: 'Dor2024!',
-  port: 5432,
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_DATABASE,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
 });
 
 const initializeDatabase = async () => {
   try {
+    console.log('Attempting to connect to the database...');
     const client = await pool.connect();
+    console.log('Connected to the database.');
     await client.query(`
       CREATE TABLE IF NOT EXISTS users_revenue (
         user_id VARCHAR(255) PRIMARY KEY,
@@ -22,4 +27,4 @@ const initializeDatabase = async () => {
   }
 };
 
-module.exports = { initializeDatabase };
+module.exports = { initializeDatabase, pool };

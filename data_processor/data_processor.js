@@ -1,19 +1,10 @@
 const fs = require('fs');
 const path = require('path');
-const { Pool } = require('pg');
+const { pool } = require('../initializdb').default;
 
 const EVENTS_DIR = '../server/events';
 
 
-const pool = new Pool({
-  user: 'postgres', 
-  host: 'localhost',
-  database: 'finonex',
-  password: 'Dor2024!', 
-  port: 5432,
-});
-
-module.exports = { pool };
 const processEventFile = async (fileName) => {
   try {
     const filePath = path.join(__dirname, EVENTS_DIR, fileName);
@@ -50,7 +41,6 @@ const processEventFile = async (fileName) => {
 
 module.exports = { processEventFile };
 
-// Process all event files
 fs.readdir(EVENTS_DIR, (err, files) => {
   if (err) {
     console.error('Error reading events directory:', err);
